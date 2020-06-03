@@ -1,0 +1,310 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{{domain_projects}}
+<link rel="stylesheet" type="text/css" href="{% static 'js/ion.rangeSlider-master/css/ion.rangeSlider.min.css' %}" >
+<script type="text/javascript" src="{% static 'js/ion.rangeSlider-master/js/ion.rangeSlider.js' %}" type="javascript"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'js/Chart.js/Chart.css' %}" >
+<script type="text/javascript" src="{% static 'js/Chart.js/Chart.js' %}" type="javascript"></script>
+
+<script language="JavaScript">
+
+    function orgselect(ob){
+        console.log(ob.value);
+        if($(ob).is(":checked")){
+            $('#domainselect').selectpicker('deselectAll');
+            $('#projectselect').selectpicker('deselectAll');
+            $('#personselect').selectpicker('deselectAll');
+            $('#domainselect').prop("disabled","disabled");
+            $('#projectselect').prop("disabled","disabled");
+            $('#personselect').prop("disabled","disabled");
+        }
+        else {
+            $('#domainselect').prop("disabled","");
+            $('#projectselect').prop("disabled","");
+            $('#personselect').prop("disabled","");
+        }
+    }
+
+    function trigger_ds(){
+
+        $('#projectselect').selectpicker('deselectAll');
+        $('#personselect').selectpicker('deselectAll');
+        //$('#projectselect').prop("disabled","disabled");
+        //$('#personselect').prop("disabled","disabled");
+
+        {% for row in domain_projects %}
+            $('#projectselect').selectpicker('val','{{row.project_id}}');
+        {% endfor %}
+    }
+
+    $(document).ready(function(){
+        $('#domainselect').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+            console.log(previousValue);
+            trigger_ds();
+        });
+
+        $('#projectselect').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+            console.log(previousValue);
+            trigger_ps();
+        });
+
+        $('#personselect').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+            console.log(previousValue);
+        });
+    });
+
+
+
+</script>
+
+<form method="get">
+    {% csrf_token %}
+    <table class="rbstable">
+
+        <tr>
+
+            <td>
+                Organisation <input type="checkbox" name="org_select" onclick="orgselect(this);">
+            </td>
+
+            <td>
+                Domains
+                <select id="domainselect" name="domain_ids" class="selectpicker" multiple data-live-search="true">
+                     <option value=""> </option>
+                    {% for row_d in domains_info %}
+                        <option value="{{row_d.domain_id}}">{{row_d.domain_name}}</option>
+                    {% endfor   %}
+                </select>
+            </td>
+
+            <td>
+                Projects
+                <select id="projectselect" name="ppm_ids" class="selectpicker" multiple data-live-search="true">
+                     <option value=""> </option>
+                    {% for row_d in ppm_info %}
+                        <option value="{{row_d.project_id}}">{{row_d.project_name}}</option>
+                    {% endfor   %}
+                </select>
+            </td>
+
+            <td>
+                Resources
+                <select id="personselect" name="vnids" class="selectpicker" multiple data-live-search="true">
+                     <option value=""> </option>
+                    {% for row_d in persons %}
+                        <option value="{{row_d.vnid}}">{{row_d.first_name}} {{row_d.last_name}}</option>
+                    {% endfor   %}
+                </select>
+            </td>
+
+        </tr>
+        <tr>
+            <td colspan="4">
+                <input type="text" class="js-range-slider" name="dt_range" id="dt_range" value="" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <input type="submit" class="greenbuttons" style="width: 100%;"  value="Let's Roll" />
+            </td>
+        </tr>
+
+    </table>
+</form>
+
+{% if chartdata %}
+    <button id='line' class="greenbuttons">Cumulative</button>
+    <button id='bar' class="greenbuttons">Per Week</button>
+    <canvas id="myChart" width="800" height="400"></canvas>
+
+    <div style="display:none">
+        <table class="rbstable">
+            <tr>
+                <th>Week</th>
+                <th>Planned</th>
+                <th>Actual</th>
+            </tr>
+            {% for rec in chartdata.planned %}
+            <tr>
+                <td>{{rec.weekstart}}</td>
+                <td>{{rec.hrs}}</td>
+                <td>{{chartdata.actuals}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endif %}
+
+<script>
+    var myChart;
+    $(document).ready(function(){
+        var lang = "en-US";
+        var d = new Date;
+        var year = d.getFullYear();
+        var month = d.getMonth();
+        var day = d.getDate();
+
+        function dateToTS (date) {
+            return date.valueOf();
+        }
+
+        function tsToDate (ts) {
+            var d = new Date(ts);
+
+            return d.toLocaleDateString(lang, {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                weekday: 'long'
+            });
+        }
+
+        $("#dt_range").ionRangeSlider({
+            skin: "big",
+            type: "double",
+            grid: true,
+            min: dateToTS(new Date(year-1, month, day)),
+            max: dateToTS(new Date(year, month, day)),
+            from: dateToTS(new Date(2020, 02, 01)),
+            to: dateToTS(new Date(2020, 02, 31)),
+            prettify: tsToDate
+        });
+
+        {% if chartdata %}
+            var planned_data = [];
+            var actuals_data = [];
+            var planned_data_c = [0];
+            var actuals_data_c = [0];
+            var x_axis = [];
+            var hrs=0;
+            {% for rec in chartdata.planned %}
+                tmp = {
+                    'weekstart': '{{rec.weekstart}}',
+                    'hrs': '{{rec.hrs}}'
+                }
+                v = '{{rec.weekstart}}'.split(",");
+                v.pop();
+                v = v.join(",");
+                x_axis.push(v);
+                planned_data.push('{{rec.hrs}}');
+                planned_data_c.push(hrs+{{rec.hrs}});
+                hrs = hrs + {{rec.hrs}};
+            {% endfor %}
+            hrs=0;
+            {% for rec in chartdata.actuals %}
+                tmp = {
+                    'weekstart': '{{rec.weekstart}}',
+                    'hrs': '{{rec.hrs}}'
+                }
+
+                actuals_data.push('{{rec.hrs}}');
+                actuals_data_c.push(hrs+{{rec.hrs}});
+                hrs = hrs + {{rec.hrs}};
+
+            {% endfor %}
+
+            config = {
+                type: 'bar',
+                data: {
+                    labels: x_axis,
+                    datasets: [{
+                        label: 'Planned',
+                        data: planned_data,
+                        backgroundColor: "blue",
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Actuals',
+                        data: actuals_data,
+                        backgroundColor: "green",
+                        borderWidth: 1
+                    }
+                    ]
+                },
+                title: {
+                    display: true,
+                    text: 'IM13011 Customer MDM'
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+                }
+
+                config_c = {
+                type: 'line',
+                data: {
+                    labels: x_axis,
+                    datasets: [{
+                        label: 'Planned',
+                        data: planned_data_c,
+                        borderColor: "blue",
+                        borderWidth: 5,
+                        fill: false
+                    },
+                    {
+                        label: 'Actuals',
+                        data: actuals_data_c,
+                        borderColor: "green",
+                        borderWidth: 5,
+                        fill: false
+                    }
+                    ]
+                },
+                title: {
+                    display: true,
+                    text: 'IM13011 Customer MDM'
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+                }
+
+            var ctx = $('#myChart');
+            myChart = new Chart(ctx, config);
+            window.scrollTo(0,document.body.scrollHeight);
+
+        {% endif %}
+
+        $("#line").click(function() {
+          change('line');
+        });
+
+        $("#bar").click(function() {
+          change('bar');
+        });
+
+        function change(newType) {
+          var ctx = document.getElementById("myChart").getContext("2d");
+
+          // Remove the old chart and all its event handles
+          if (myChart) {
+            myChart.destroy();
+          }
+
+          // Chart.js modifies the object you pass in. Pass a copy of the object so we can use the original object later
+        if(newType == 'line')
+            var temp = jQuery.extend(true, {}, config_c);
+        else
+            var temp = jQuery.extend(true, {}, config);
+          temp.type = newType;
+          myChart = new Chart(ctx, temp);
+          window.scrollTo(0,document.body.scrollHeight);
+        };
+    });
+</script>
+
+{% endblock %}

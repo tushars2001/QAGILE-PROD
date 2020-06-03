@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% block content %}
+    <script>
+
+        function changeStatus(status){
+            $("#rfs_status").val(status);
+            if(document.forms["initRFS"].reportValidity())
+                $("#initRFS").submit();
+        }
+
+        const months = [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec'
+        ];
+
+        $(document).ready(function() {
+            $('#approvals').hide();
+            $('#collapse').click(function(){
+                $('#approvals').slideToggle('slow');
+            });
+        });
+
+    </script>
+
+    <style>
+        .w3-border-red, .w3-hover-border-red:hover {
+            border: 4px solid #A40000;
+            border-radius: 5px;
+            padding-top: 5px;
+            padding-right: 5px;
+            padding-bottom: 5px;
+            padding-left: 5px;
+        }
+
+    </style>
+    <a href="{% url 'export_users_xls' %}?rfs_request_id={{rfs_request_data.rfs_request_id}}{% if version %}&version={{version}}{% endif %}">Export RFS in Excel</a>
+    <h5>{{page.name}} - <a href="/rfs/">RFS Home</a> </h5>
+    <div id="myHeader">
+    <div class="headernav">
+        <div class="row text-center">
+            <span class="col-md-4">
+                RFS ID: {% if rfs_request_data.rfs_request_id %}
+                            RFS00000{{ rfs_request_data.rfs_request_id}}
+                        {% else %}
+                            Not Created {% endif %}
+               </span>
+            {% if version %}
+                <span class="col-md-4" style="background:yellow;color:black;"> Version: {{version}}</span>
+                <span class="col-md-4" >
+                    <form name="rfsform" method="post" action="/rfs/request-for-service/">
+                            {% csrf_token %}
+                            <input type="hidden" name="rfs_request_id" value="{{rfs_request_data.rfs_request_id}}">
+                            <input type="hidden" name="via_view" value="via_view">
+                            <button class="greenbuttons" type="submit">Current RFS</button>
+                        </form>
+                </span>
+            {% endif %}
+            {% if not version %}
+                <span class="col-md-2">
+                    {% if rfs_request_data.rfs_status == '' %}
+                        <button class="greenbuttons" type="button" onclick="changeStatus('NEW');" > Start RFS </button>
+                    {% elif rfs_request_data.rfs_status == 'APPROVED' %}
+                        <button class="greenbuttons" type="button" onclick="changeStatus('NEW');" > Reopen RFS </button>
+                    {% else  %}
+                        <button class="greenbuttons" type="button" onclick="changeStatus('{{rfs_request_data.rfs_status}}');"> Save RFS </button>
+                    {% endif %}</span>
+                <span class="col-md-2">
+                    {% if rfs_request_data.rfs_request_id and rfs_request_data.rfs_status == 'SUBMITTED' %}<button class="greenbuttons" type="button" onclick="changeStatus('APPROVED');">Approve </button>{% endif %}
+                    {% if rfs_request_data.rfs_request_id and rfs_request_data.rfs_status == 'NEW' %}<button class="greenbuttons" type="button" onclick="changeStatus('SUBMITTED');">Submit RFS</button>{% endif %}
+                </span>
+                <span class="col-md-2">{% if rfs_request_data.rfs_request_id and rfs_request_data.rfs_status == 'SUBMITTED' %}<button class="greenbuttons" type="button" onclick="changeStatus('NEW');"> Return </button>{% endif %}</span>
+                <span class="col-md-2">  {{ rfs_request_data.rfs_status}} </span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="headernavblue">
+        <div class="row text-center">
+            {% if rfs_request_data.rfs_request_id %}
+            <span class="col-md-4">
+                <form name="rfsform" method="post" action="{% if version %}/rfs/request-for-service/approved{% else %}.{% endif %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="rfs_request_id" value="{{rfs_request_data.rfs_request_id}}">
+                    <input type="hidden" name="via_view" value="via_view">
+                    {% if version %}<input type="hidden" name="version" value="{{version}}">{% endif %}
+                    <button class="greenbuttons" type="submit">Request For Service</button>
+                </form>
+            </span>
+            <span class="col-md-4">
+                <form name="rfsform" method="post" action="{% if version %}/rfs/request-for-service/estimates/approved{% else %}estimates{% endif %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="rfs_request_id" value="{{rfs_request_data.rfs_request_id}}">
+                    <input type="hidden" name="via_view" value="via_view">
+                    {% if version %}<input type="hidden" name="version" value="{{version}}">{% endif %}
+                    <button class="greenbuttons" type="submit">Estimates</button>
+                </form>
+            </span>
+            <span class="col-md-4">
+                <form name="rfsform" method="post" action="{% if version %}/rfs/request-for-service/resource-loading/approved{% else %}resource-loading{% endif %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="rfs_request_id" value="{{rfs_request_data.rfs_request_id}}">
+                    <input type="hidden" name="via_view" value="via_view">
+                    {% if version %}<input type="hidden" name="version" value="{{version}}">{% endif %}
+                    <button class="greenbuttons" type="submit">Resource Loading</button>
+                </form>
+            </span>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+
+    {% block rfs_content %}
+    {% endblock %}
+    {% load humanize %}
+    {% if approved_rfs %}
+        <div id="collapse" class="w3-border-bottom w3-border-red">
+            Approval History +/-
+
+        <div id="approvals">
+            <table class="rbstable" >
+                <tr>
+
+                    <th>
+                        Approval Date
+                    </th>
+                    <th>
+                        Total QA Hrs
+                    </th>
+                    <th colspan="2">
+                        Total QA Cost
+                    </th>
+                </tr>
+            {% for rfs in approved_rfs %}
+                <tr>
+
+                    <td>
+                        {{rfs.approval_date|date:"d-M-Y"}}
+                    </td>
+                    <td>
+                        {{rfs.rfs_total_hrs|default_if_none:"0"|intcomma}}
+                    </td>
+                    <td>
+                        ${{rfs.total_qa_cost|default_if_none:"0"|intcomma}}
+                    </td>
+                    <td>
+                        <form method="post" action="./approved">
+                            {% csrf_token %}
+                            <button type="submit" class="greenbuttons" value="View">View Version {{rfs.approval_num}}</button>
+                            <input type="hidden" name="rfs_request_id" value="{{rfs.rfs_request_id}}">
+                            <input type="hidden" name="version" value="{{rfs.approval_num}}">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor%}
+            </table>
+        </div>
+         </div>
+    {% endif %}
+
+    <div style="height:500px"></div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if request.GET.error %}
+    <p>{{request.GET.error}}</p>
+{% endif %}
+
+{% if msg != '' %}<h3>{{msg}}</h3>{% endif %}
+{{profile_data}}
+<form name="loginform" method="post" action=".">
+    {% csrf_token %}
+    <table class="rbstable">
+
+    </table>
+</form>
+{% endblock %}

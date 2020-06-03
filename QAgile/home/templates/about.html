@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block content %}
+
+<table border="1" width="100%" style="" cellspacing="30px" cellpadding="15px">
+
+    <tr>
+        <td height="30px">
+            <h1>RBS QA CoE Initiative</h1>
+        </td>
+    </tr>
+     <tr>
+        <td height="20px">
+            <h5>Goal:</h5>
+            <p>To build an integrated system for QA organization that integrates processes, tools and people and act as one stop shop for QA and RBS.</p>
+        </td>
+    </tr>
+    <tr>
+        <td height="30px">
+            <h5>Current Features:</h5>
+            <p>Manage Team - This section is ideally for admin to manage team data that is being used in RFS creation. We can manage people, domains, roles, locations and rates. All this data is input to RFS.</p>
+            <p>Create RFS - There is an RFS creation and workflow in place. Anyone (preferably project team) starts QA engagement by creating RFS from 'Create Request for Service'. RFS can be saved, submitted, approved, rejected. It implements almost all RFS features that we do manually.  </p>
+            <p>Please send email to report any bug, feature suggestions or comments</p>
+        </td>
+    </tr>
+    <tr>
+        <td height="30px">
+            <h5>Future Features:</h5>
+            <p>Tenrox Integration - Integrate tenrox data for automated effort and cost analysis, planned vs actuals etc.</p>
+            <p>Jira/ALM Integration: To bring in uniform analytics and reporting across projects. </p>
+            <p>SharePoint Integration - Keep documents stored in SharePoint behind the scene and manage documents from single point. </p>
+            <p>QA Project Execution Workflows: Start to finish project and process execution. </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Bigger Idea
+            <iframe src="{% static 'images/QA_CoE_UP.pdf' %}" width="100%" height="500px">
+
+        </td>
+    </tr>
+
+
+</table>
+
+{% endblock %}
