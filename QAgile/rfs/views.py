@@ -112,6 +112,9 @@ def resource_loading(request):
         else:
             rfs_request_id = models.update_rfs_resourceLoading(request.POST)
 
+    if request.method == "GET":
+        rfs_request_id = request.GET['rfs_request_id']
+
     rfs_resourceLoading_data = models.get_rfs_resourceLoading(rfs_request_id)
     rfs_request_data = models.get_rfs_request(rfs_request_id)
     approved_rfs = models.get_approved_rfs(rfs_request_id)
