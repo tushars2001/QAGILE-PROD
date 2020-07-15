@@ -10,7 +10,7 @@
     <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.bundle.js' %}" type="javascript"></script>
 
     <link rel="stylesheet" type="text/css" href="{% static 'DataTables/datatables.min.css' %}" >
-    <script type="text/javascript" src="{% static 'DataTables/datatables.min.js' %}" type="javascript"></script>
+    <script type="text/javascript" src="{% static 'DataTables/datatables.js' %}" type="javascript"></script>
 
 
     <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap-select.css' %}" >
@@ -138,7 +138,7 @@
   <body>
   <div id="loginout" style="position:fixed;top:30;right:0;z-index:199;margin-right:30px;margin-top:2px;backgorund-color:white;">
     {% if user.is_authenticated %}
-    <p>Welcome, {{ user.first_name }}. <a href="/identity/logout/"><img src="{% static 'images/logout.png' %}" height="35px;" width="40px"></a></p>
+        <p>Welcome, {{ user.first_name }}. <a href="/identity/logout/"><img src="{% static 'images/logout.png' %}" height="35px;" width="40px"></a></p>
 
     {% else %}
         <a href="/identity/"><img src="{% static 'images/login.png' %}" height="35px;" width="40px"></a>

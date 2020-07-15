@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <div> <a href="./create-fit-and-format">+ Create New File Definition </a> </div>
+    <table id="rfstable" class="display">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>File Type</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for row in ffdata %}
+                <tr>
+                    <td>
+                        <a href="./run-test/?definition={{row.name}}">Run Test</a>
+                    </td>
+                    <td><a href="./structure?name={{row.name}}">{{row.name}}</a> </td>
+                    <td>{{row.description}}</td>
+                    <td>{{row.file_type}}</td>
+
+                </tr>
+            {% endfor   %}
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+
+    $(document).ready(function() {
+            $('#rfstable').DataTable({
+                paging: false,
+                scrollY: 300,
+                fixedHeader: false,
+                order: [[0, 'asc']]
+            });
+
+        } );
+
+</script>
+
+{% endblock %}

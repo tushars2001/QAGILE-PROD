@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if request.GET.error %}
+    <p>{{request.GET.error}}</p>
+{% endif %}
+<h2><a href="./fit-and-format/">Universal File Format Validator</a></h2>
+{% endblock %}

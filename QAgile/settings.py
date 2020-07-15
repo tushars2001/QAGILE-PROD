@@ -68,6 +68,8 @@ TEMPLATES = [
             os.path.join(BASE_DIR, "QAgile/rfs/templates"),
             os.path.join(BASE_DIR, "QAgile/identity/templates"),
             os.path.join(BASE_DIR, "QAgile/analytics/templates"),
+            os.path.join(BASE_DIR, "QAgile/tools/templates"),
+            os.path.join(BASE_DIR, "QAgile/ignite_tracker/templates"),
         ]
         ,
         'APP_DIRS': True,

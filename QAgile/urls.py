@@ -49,6 +49,8 @@ urlpatterns = [
     path('identity/', include('QAgile.identity.urls')),
     path('analytics/', include('QAgile.analytics.urls')),
     url(r'^saml/', include('django_python3_saml.urls')),
+    path('tools/', include('QAgile.tools.urls')),
+    path('ignite-tracker/', include('QAgile.ignite_tracker.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += staticfiles_urlpatterns()
