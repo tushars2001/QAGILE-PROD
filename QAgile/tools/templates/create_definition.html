@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    #rfstable {
+
+    }
+</style>
+    <div style="margin-bottom:20px"><a href="../../">Tools</a> --> <a href="../">Universal File Format validator </a> </div>
+{% if success == 'False' %}
+    <div>
+        <h3>Error In Creating Definition</h3>
+        <h4>{{message}}</h4>
+    </div>
+{% endif %}
+<div>
+    <form method="post" action="create/">
+        {% csrf_token %}
+    <table class="rfstables" >
+            <tr>
+                <th>Name</th><td><input name="name"  maxlength="20" onblur="check_unique_name(this)">
+            <div style="display:none" id="message"></div></td></tr>
+            <tr>
+                <th>Description</th><td><input name="description" maxlength="45"></td></tr>
+
+            <tr>
+                <th>Is First Record Header?</th><td><input type="checkbox" name="is_header"></td></tr>
+
+            <tr>
+               <th>File Type</th><td>
+                <select  name="file_type">
+                    <option value="FIXED">FIXED</option>
+                    <option value="CSV">CSV</option>
+                    <option value="TAB" >TAB</option>
+                    <option value="PIPE">PIPE</option>
+                </select>
+            </td></tr>
+            <tr>
+                <td colspan="2"><button id="sub_form" class="greenbuttons" type="submit" disabled>Submit</button></td>
+            </tr>
+    </table>
+    </form>
+
+</div>
+
+<script>
+
+    $(document).ready(function() {
+            $('#rfstable2').DataTable({
+                paging: false,
+                scrollY: 300,
+                fixedHeader: false,
+                order: false,
+                search: false,
+                sort: false
+            });
+
+    } );
+
+    function check_unique_name(ob){
+        console.log(ob.value);
+        if(ob.value.length >3){
+            $.get( "check_name?name="+ob.value, function( data ) {
+                  if(data.success){
+                    $("#message").text("Name not available.");
+                    $("#sub_form").prop("disabled","disabled");
+                    $("#message").fadeIn(1000, function(){
+                        $("#message").fadeOut(1000);
+                        $("#message").text("");
+                    })
+                  }
+                  else{
+                    $("#sub_form").prop("disabled","");
+                  }
+            }).fail(function() {
+                $("#message").text("Error!!!");
+                $("#sub_form").prop("disabled","")
+                 $("#message").fadeIn(1000, function(){
+                        $("#message").fadeOut(3000, function(){$("#message").text("");});
+
+                    })
+              });
+        }
+        else{
+            $("#message").text("Min 4 char");
+        }
+    }
+
+</script>
+
+{% endblock %}

@@ -3,12 +3,15 @@ from ..admin.models import dict_fetchall, isfloat
 import re
 import datetime
 from validate_email import validate_email
+from django.db import connection, transaction, DatabaseError, IntegrityError
 # Create your models here.
 
 
 def get_ffdata(name):
     where = 'where 1=1'
-    if name:
+    if not name:
+        name = ''
+    if name != '%':
         where = where + " and name = '" + name + "'"
 
     sql = "select name, description, file_type from tools.definition " + where
@@ -173,3 +176,77 @@ def test_range(value, minv, maxv):
         ret['message'] = ' Greater than ' + str(maxv)
 
     return ret
+
+
+def set_structure_field(record_id, field, val):
+    updated = {'successfully': True, 'message': 'Record Updated.'}
+
+    fields = {
+        'record_id': record_id,
+        'field': field,
+        'val': val
+    }
+
+    sql = """
+    UPDATE `tools`.`structure` 
+    SET """ + str(fields['field']).replace('field_', '') + """ = '""" + str(fields['val']) + """'
+    WHERE `record_id` = '""" + str(fields['record_id']) + """'"""
+
+    print(sql, fields)
+
+    try:
+        with transaction.atomic():
+            with connection.cursor() as cursor:
+                cursor.execute(sql, fields)
+                cursor.close()
+
+    except IntegrityError as e:
+        updated['successfully'] = False
+        updated['message'] = str(e).split(",")[1].replace("'", "")
+
+    except DatabaseError as e:
+        updated['successfully'] = False
+        updated['message'] = str(e).split(",")[1].replace("'", "")
+
+    return updated
+
+
+def check_name(name):
+    fields = {
+        'name': name.strip()
+    }
+    sql = "select count(*) as found from tools.definition where trim(name) " \
+          "= %(name)s "
+
+    with connection.cursor() as cursor:
+        cursor.execute(sql, fields)
+        data = dict_fetchall(cursor)
+        cursor.close()
+
+    return bool(data[0]['found'])
+
+
+def create(fields):
+    updated = {'successfully': True, 'message': ''}
+    sql = """
+        insert into `tools`.`definition` (name, description, file_type, is_header) values (
+            %(name)s, %(description)s, %(file_type)s, %(is_header)s
+        ) """
+
+    print(sql, fields)
+
+    try:
+        with transaction.atomic():
+            with connection.cursor() as cursor:
+                cursor.execute(sql, fields)
+                cursor.close()
+
+    except IntegrityError as e:
+        updated['successfully'] = False
+        updated['message'] = str(e).split(",")[1].replace("'", "")
+
+    except DatabaseError as e:
+        updated['successfully'] = False
+        updated['message'] = str(e).split(",")[1].replace("'", "")
+
+    return updated

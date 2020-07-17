@@ -145,6 +145,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, 'staticfiles'),
+    os.path.join(PROJECT_DIR, 'ignite_tracker'),
 )
 
 REST_FRAMEWORK = {

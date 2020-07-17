@@ -1,11 +1,11 @@
 import os
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
 from . import models
 from django.core.files.storage import FileSystemStorage
 import pandas as pd
 import csv
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 # Create your views here.
 
@@ -15,13 +15,22 @@ def tools_home(request):
 
 
 def fit_format(request):
-    ffdata = models.get_ffdata('')
+    ffdata = models.get_ffdata('%')
 
     context_data = {
 
         'ffdata': ffdata
     }
     return render(request, 'ff.html', context_data)
+
+
+def create_definition(request):
+    context = {'success': 'True', 'message': ''}
+
+    if 'success' in request.GET and 'message' in request.GET:
+        context = {'success': request.GET['success'], 'message': request.GET['message']}
+
+    return render(request, 'create_definition.html', context)
 
 
 def structure(request):
@@ -32,6 +41,9 @@ def structure(request):
 
     ffdata = models.get_ffdata(name)
     ffdetails = models.get_ffdetails(name)
+
+    if not ffdata:
+        ffdata = [{'name': ''}]
 
     context_data = {
 
@@ -131,7 +143,8 @@ def run(request):
 
     # all null in column check
     for col in range(cols):
-        if ffdetails[col]['all_null'] == 0:
+        # need to check if all_null not allowed, but ignore if either required or pk is a requirement
+        if ffdetails[col]['all_null'] == 0 and ffdetails[col]['required'] == 0 and ffdetails[col]['is_pk'] == 0:
             if data[(data[col].replace(' ', '', regex=True) != u'')].index.size == 0:
                 all_null_errors.append("Column " + ffdetails[col][
                     'col_name'] + " has all Null/Blanks")
@@ -212,3 +225,79 @@ def run(request):
         }
         print("rendering html")
         return render(request, 'run.html', context_data)
+
+
+def post_data(request):
+    ret = {'success': True, 'message': ''}
+    updated = {'successfully': False, 'message': ''}
+
+    if 'record_id' not in request.POST:
+        ret['success'] = False
+        ret['message'] = ret['message'] + "\n Record_id not found. Record not updated."
+
+    if 'field' not in request.POST:
+        ret['success'] = False
+        ret['message'] = ret['message'] + "\n field not found. Record not updated."
+
+    if 'val' not in request.POST:
+        ret['success'] = False
+        ret['message'] = ret['message'] + "\n val not found. Record not updated."
+
+    if ret['success']:
+        updated = models.set_structure_field(request.POST['record_id'], request.POST['field'], request.POST['val'])
+        if not updated['successfully']:
+            ret['success'] = False
+            ret['message'] = ret['message'] + "\n Error Updating record." + updated['message']
+
+    return JsonResponse(ret)
+
+
+def check_name(request):
+    ret = {'success': True, 'message': ''}
+
+    if 'name' not in request.GET:
+        ret['success'] = False
+        ret['message'] = ret['message'] + "\n Invalid request."
+
+    if ret['success']:
+        ret["success"] = models.check_name(request.GET['name'])
+        if not ret["success"]:
+            ret['success'] = False
+            ret['message'] = "Name not available!"
+
+    return JsonResponse(ret)
+
+
+def create(request):
+    ret = {'success': True, 'message': ''}
+    fields = {'name': '', 'description': '', 'is_header': 0, 'file_type': ''}
+
+    if 'name' not in request.POST:
+        ret['success'] = False
+        ret['message'] = ret['message'] + "\n Invalid request."
+    else:
+        fields['name'] = request.POST['name']
+
+    if 'description' in request.POST:
+        fields['description'] = request.POST['description']
+
+    if 'is_header' in request.POST:
+        if request.POST['is_header'] == "on":
+            fields['is_header'] = 1
+        else:
+            fields['is_header'] = 0
+
+    if 'file_type' in request.POST:
+        fields['file_type'] = request.POST['file_type']
+
+    if ret['success']:
+        out = models.create(fields)
+        ret['success'] = out['successfully']
+        if not ret["success"]:
+            ret['success'] = False
+            ret['message'] = out['message']
+
+    if ret['success']:
+        return redirect('/tools/fit-and-format/')
+    else:
+        return redirect('/tools/fit-and-format/create-new-definition/?ret.success=False&ret.message='+ret['message'])

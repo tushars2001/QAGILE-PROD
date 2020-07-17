@@ -9,5 +9,8 @@ urlpatterns = [
     path('fit-and-format/structure/', views.structure),
     path('fit-and-format/run-test/', views.run_test),
     path('fit-and-format/run-test/run/', views.run),
-
+    path('fit-and-format/structure/post/', views.post_data),
+    path('fit-and-format/create-new-definition/', views.create_definition),
+    path('fit-and-format/create-new-definition/check_name/', views.check_name),
+    path('fit-and-format/create-new-definition/create/', views.create),
 ]

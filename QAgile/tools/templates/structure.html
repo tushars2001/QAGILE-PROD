@@ -2,21 +2,27 @@
 {% block content %}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'js/jquery.dataTables.min.css' %}" >
-<link rel="stylesheet" type="text/css" href="{% static 'DataTables/Buttons-1.6.1/css/buttons.dataTables.css' %}" >
+<!--<link rel="stylesheet" type="text/css" href="{% static 'DataTables/Buttons-1.6.1/css/buttons.dataTables.css' %}" >
 <link rel="stylesheet" type="text/css" href="{% static 'DataTables/Select-1.3.1/css/select.dataTables.css' %}" >
-<!-- <link rel="stylesheet" type="text/css" href="{% static 'DataTables/Editor-2020-03-24-1.9.2/css/editor.dataTables.css' %}" >-->
+<link rel="stylesheet" type="text/css" href="{% static 'DataTables/Editor-2020-03-24-1.9.2/css/editor.dataTables.css' %}" >-->
 <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}" type="javascript"></script>
-<script type="text/javascript" src="{% static 'DataTables/Buttons-1.6.1/js/dataTables.buttons.js' %}" type="javascript"></script>
-<script type="text/javascript" src="{% static 'DataTables/Select-1.3.1/js/dataTables.select.js' %}" type="javascript"></script>
-<!-- <script type="text/javascript" src="{% static 'DataTables/Editor-2020-03-24-1.9.2/js/dataTables.editor.js' %}" type="javascript"></script>-->
+<!-- <script type="text/javascript" src="{% static 'DataTables/Buttons-1.6.1/js/dataTables.buttons.js' %}" type="javascript"></script>
+ <script type="text/javascript" src="{% static 'DataTables/Select-1.3.1/js/dataTables.select.js' %}" type="javascript"></script>
+<script type="text/javascript" src="{% static 'DataTables/Editor-2020-03-24-1.9.2/js/dataTables.editor.js' %}" type="javascript"></script>-->
 <style>
     .row_edit{
-        display:none;
+        //display:none;
     }
 </style>
-
+    <div style="margin-bottom:20px"><a href="../../">Tools</a> --> <a href="../">Universal File Format validator </a> </div>
 <div>
-    <h2>File Definition for <b>{{ffdata.name}}</b></h2>
+    <h2>File Structure for
+        {% if ffdata.name %}
+            <b>{{ffdata.name}}</b>
+        {% else %}
+            <b>No Definition! Pls create new def</b>
+        {% endif %}
+    </h2>
 <div>
     <form>
     <table id="rfstable" class="display" >
@@ -51,19 +57,19 @@
                     <td id="order">
                         <span id="order_val" class="row_val">{{row.order}}</span>
                         <span id="order_edit" class="row_edit">
-                            <input name="field_order" size="2" value="{{row.order}}">
+                            <input  onblur="editor_out(this);" onchange="editor(this);" name="field_order" size="2" value="{{row.order}}">
                         </span>
                     </td>
                     <td id="col_name">
                         <span id="col_name_val"  class="row_val">{{row.col_name}}</span>
                         <span id="col_name_edit" class="row_edit">
-                            <input name="field_col_name" size="10" value="{{row.col_name}}">
+                            <input  onblur="editor_out(this);" onchange="editor(this);" name="field_col_name" size="10" value="{{row.col_name}}">
                         </span>
                     </td>
                     <td id="col_data_type">
                         <span id="col_data_type_val" class="row_val">{{row.col_data_type}}</span>
                         <span id="col_data_type_edit" class="row_edit">
-                            <select name="field_col_data_type">
+                            <select onblur="editor_out(this);" onchange="editor(this);" name="field_col_data_type">
                                 <option value="INT" {% if row.col_data_type == 'INT' %} selected {% endif %}>INT</option>
                                 <option value="STRING" {% if row.col_data_type == 'STRING' %} selected {% endif %}>STRING</option>
                                 <option value="DECIMAL" {% if row.col_data_type == 'DECIMAL' %} selected {% endif %}>DECIMAL</option>
@@ -74,7 +80,7 @@
                     <td id="max_len">
                         <span id="max_len_val" class="row_val">{{row.max_len}}</span>
                         <span id="max_len_edit" class="row_edit">
-                            <input name="field_max_len" size="5" value="{{row.max_len}}">
+                            <input  onblur="editor_out(this);" onchange="editor(this);" name="field_max_len" size="5" value="{{row.max_len}}">
                         </span>
                     </td>
                     <td id="is_pk">
@@ -84,8 +90,8 @@
                         Yes
                         {% endif %}</span>
                         <span id="is_pk_edit" class="row_edit">
-                            Yes<input type="radio" name="field_is_pk" value="Yes" {% if row.is_pk == 1 %} selected {% endif %}>
-                            No<input type="radio" name="field_is_pk" value="No" {% if row.is_pk == 0 %} selected {% endif %}>
+                            Yes<input  onblur="editor_out(this);" onchange="editor(this);" type="radio" name="field_is_pk" value="Yes" {% if row.is_pk == 1 %} selected {% endif %}>
+                            No<input  onblur="editor_out(this);" onchange="editor(this);" type="radio" name="field_is_pk" value="No" {% if row.is_pk == 0 %} selected {% endif %}>
                         </span>
                     </td>
 
@@ -96,8 +102,8 @@
                         Yes
                         {% endif %}</span>
                         <span id="required_edit" class="row_edit">
-                            Yes<input type="radio" name="field_required" value="Yes" {% if row.required == 1 %} checked {% endif %}>
-                            No<input type="radio" name="field_required" value="No" {% if row.required == 0 %} checked {% endif %}>
+                            Yes<input  onblur="editor_out(this);" onchange="editor(this);" type="radio" name="field_required" value="Yes" {% if row.required == 1 %} checked {% endif %}>
+                            No<input  onblur="editor_out(this);" onchange="editor(this);" type="radio" name="field_required" value="No" {% if row.required == 0 %} checked {% endif %}>
                         </span>
                     </td>
 
@@ -108,36 +114,36 @@
                         Yes
                         {% endif %}</span>
                         <span id="is_fixed_len_edit" class="row_edit">
-                            Yes<input type="radio" name="field_is_fixed_len" value="Yes" {% if row.is_fixed_len == 'FIXED' %} checked {% endif %}>
-                            No<input type="radio" name="field_is_fixed_len" value="No" {% if row.is_fixed_len != 'FIXED' %} checked {% endif %}>
+                            Yes<input  onblur="editor_out(this);" onchange="editor(this);" type="radio" name="field_is_fixed_len" value="Yes" {% if row.is_fixed_len == 'FIXED' %} checked {% endif %}>
+                            No<input  onblur="editor_out(this);" onchange="editor(this);" type="radio" name="field_is_fixed_len" value="No" {% if row.is_fixed_len != 'FIXED' %} checked {% endif %}>
                         </span>
                     </td>
 
                     <td id="min_value">
                         <span id="min_value_val" class="row_val">{{row.min_value}}</span>
                         <span id="min_value_edit" class="row_edit">
-                            <input name="field_min_value" size="5" value="{{row.min_value}}">
+                            <input  onblur="editor_out(this);" onchange="editor(this);" name="field_min_value" size="5" value="{{row.min_value}}">
                         </span>
                     </td>
 
                     <td id="max_value">
                         <span id="max_value_val" class="row_val">{{row.max_value}}</span>
                         <span id="max_value_edit" class="row_edit">
-                            <input name="field_max_value" size="5" value="{{row.min_value}}">
+                            <input  onblur="editor_out(this);" onchange="editor(this);" name="field_max_value" size="5" value="{{row.min_value}}">
                         </span>
                     </td>
 
                     <td id="decimals">
-                        <span id="decimals_val" class="row_val">{{row.decimals}}</span>
+                        <span id="decimals_val" class="row_val">{{row.decimals|default_if_none:"0"}}</span>
                         <span id="decimals_edit" class="row_edit">
-                            <input name="field_decimals" size="5" value="{{row.decimals}}">
+                            <input  onblur="editor_out(this);" onchange="editor(this);" name="field_decimals" size="5" value="{{row.decimals|default_if_none:"0"}}">
                         </span>
                     </td>
 
                     <td id="format">
                         <span id="format_val" class="row_val">{{row.format}}</span>
                         <span id="format_edit" class="row_edit">
-                            <select name="field_format">
+                            <select onblur="editor_out(this);" onchange="editor(this);" name="field_format">
                                 <option value="FIXED" {% if row.format == 'FIXED' %} selected {% endif %}>FIXED</option>
                                 <option value="CSV" {% if row.format == 'CSV' %} selected {% endif %}>CSV</option>
                                 <option value="TAB" {% if row.format == 'TAB' %} selected {% endif %}>TAB</option>
@@ -153,8 +159,8 @@
                         Yes
                         {% endif %}</span>
                         <span id="all_null_edit" class="row_edit">
-                            Yes<input type="radio" name="field_all_null" value="Yes" {% if row.all_null == 1 %} checked="checked" {% endif %}>
-                            No<input type="radio" name="field_all_null" value="No" {% if row.all_null == 0 %} checked="checked" {% endif %}>
+                            Yes<input  onblur="editor_out(this);" onchange="editor(this);" type="radio" name="field_all_null" value="Yes" {% if row.all_null == 1 %} checked="checked" {% endif %}>
+                            No<input  onblur="editor_out(this);" onchange="editor(this);" type="radio" name="field_all_null" value="No" {% if row.all_null == 0 %} checked="checked" {% endif %}>
                         </span>
                     </td>
                 </tr>
@@ -166,7 +172,6 @@
 </div>
 
 <script>
-    var editor;
 
     $(document).ready(function() {
     /*editor = new $.fn.dataTable.Editor( {
@@ -273,16 +278,21 @@
 
         // Activate an inline edit on click of a table cell
         $('#rfstable').on( 'click', 'tbody td:not(:first-child)', function (e) {
-            console.log(this);
-            $("#"+this.id+"_val").hide();
-            $(".row_edit").hide();
-            $("#"+this.id+"_edit").show();
-        } );
 
-        $(".row_edit").on("blur", function(){
+            if(this.children[0].style.display == "none" || !businessRuleCheck(this))
+                return false;
+            console.log(this);
             $(".row_edit").hide();
             $(".row_val").show();
+            $(this.children[0]).hide()
+            $(this.children[1]).show()
+        } );
+
+        $("input").on("change",function(){
+            console.log("changed");
         });
+
+        $(".row_edit").hide();
 
         $('#rfstable').DataTable( {
             dom: "Bfrtip",
@@ -311,16 +321,87 @@
             select: {
                 style:    'os',
                 selector: 'td:first-child'
-            },
-            buttons: [
-                { extend: "create", editor: editor },
-                { extend: "edit",   editor: editor },
-                { extend: "remove", editor: editor }
-            ]
+            }
         } );
 
+        //$(body).on("click", "", editor_mouse);
 
     } );
+
+    function editor_out(ob){
+        console.log("Out");
+        $(ob.parentElement).hide();
+        $(".row_edit").hide();
+        $(".row_val").show();
+    }
+
+    function editor(ob){
+        console.log("Changed");
+        $(ob.parentElement).hide();
+        $(".row_edit").hide();
+        $(".row_val").show();
+        $.ajax({
+            url : "post/",
+            type: "POST",
+            ob:ob,
+            data : {
+                'record_id':ob.parentElement.parentElement.parentElement.cells[1].innerHTML,
+                'field':ob.name,
+                'val':$(ob).val(),
+                'csrfmiddlewaretoken':'{{csrf_token }}'
+                },
+            success: function(data, textStatus, jqXHR)
+            {
+                if(data.success){
+                    this.ob.parentElement.parentElement.children[0].innerHTML = this.ob.value;
+                }
+                else{
+                    alert("There was error in updating record." + data.message);
+                    this.ob.value = this.ob.parentElement.parentElement.children[0].innerHTML;
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert("There was error in updating record.");
+            }
+        });
+    }
+
+    function editor_mouse(ob){
+        console.log("Mouse out");
+        //$(ob.parentElement).hide();
+        $(".row_edit").hide();
+        $(".row_val").show();
+    }
+
+    function businessRuleCheck(ob){
+        console.log(ob);
+        srcField = ob.children[1].children[0].name;
+        passed = true;
+        if (srcField == 'field_decimals'){
+            $(ob.parentElement.cells).each(function(){
+                if(this.id == 'col_data_type'){
+                    if( $(this.children[0]).text()  != 'DECIMAL' ){
+                        passed = false;
+                        return passed;
+                    }
+                }
+
+            });
+        }
+
+        if (srcField == 'field_is_fixed_len' && '{{ffdata.file_type}}' == 'FIXED'){
+            passed = false;
+            return passed;
+        }
+
+        if (srcField == 'field_order'){
+            //passed = false;
+            //return passed;
+        }
+
+        return passed;
+    }
 
 </script>
 
