@@ -5351,3 +5351,218 @@ OSError: [Errno 22] Invalid argument
 OSError: [Errno 22] Invalid argument
 2020-07-16 16:41:00.737958: Running on_exit tasks
 2020-07-16 16:41:00.753601: wfastcgi.py 3.0.0 closed
+2020-07-17 14:19:43.816468: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 14:19:43.832082: wfastcgi.py 3.0.0 initialized
+2020-07-17 14:21:18.766127: wfastcgi.py exiting because QAgile\QAgile\tools\views.py has changed, matching .*((\.py)|(\.config))$
+2020-07-17 14:21:18.787794: Running on_exit tasks
+2020-07-17 14:22:38.020599: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 14:22:38.025601: wfastcgi.py 3.0.0 initialized
+2020-07-17 14:23:30.085103: wfastcgi.py exiting because QAgile\QAgile\tools\views.py has changed, matching .*((\.py)|(\.config))$
+2020-07-17 14:23:30.100732: Running on_exit tasks
+2020-07-17 14:33:38.805343: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 14:33:38.820960: wfastcgi.py 3.0.0 initialized
+2020-07-17 14:47:03.058055: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-17 14:47:03.058055: Running on_exit tasks
+2020-07-17 14:47:03.073670: wfastcgi.py 3.0.0 closed
+2020-07-17 14:53:14.183477: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 14:53:14.205104: wfastcgi.py 3.0.0 initialized
+2020-07-17 15:05:40.922868: wfastcgi.py exiting because QAgile\QAgile\tools\models.py has changed, matching .*((\.py)|(\.config))$
+2020-07-17 15:05:40.938497: Running on_exit tasks
+2020-07-17 15:53:58.590487: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 15:53:58.606113: wfastcgi.py 3.0.0 initialized
+2020-07-17 15:54:04.889121: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 15:54:04.923627: wfastcgi.py 3.0.0 initialized
+2020-07-17 15:54:05.011140: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 15:54:05.022641: wfastcgi.py 3.0.0 initialized
+2020-07-17 15:54:05.080651: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 15:54:05.091651: wfastcgi.py 3.0.0 initialized
+2020-07-17 15:54:05.158662: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 15:54:05.170161: wfastcgi.py 3.0.0 initialized
+2020-07-17 15:54:05.504715: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 15:54:05.648737: wfastcgi.py 3.0.0 initialized
+2020-07-17 15:55:22.281680: wfastcgi.py exiting because QAgile\QAgile\tools\models.py has changed, matching .*((\.py)|(\.config))$
+2020-07-17 15:55:22.281680: wfastcgi.py exiting because QAgile\QAgile\tools\models.py has changed, matching .*((\.py)|(\.config))$
+2020-07-17 15:55:22.312932: Running on_exit tasks
+2020-07-17 15:55:22.312932: Running on_exit tasks
+2020-07-17 15:55:22.331572: Running on_exit tasks
+2020-07-17 15:55:22.332572: Running on_exit tasks
+2020-07-17 15:55:22.335073: Running on_exit tasks
+2020-07-17 15:55:22.350713: Running on_exit tasks
+2020-07-17 17:56:56.235318: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 17:56:56.256959: wfastcgi.py 3.0.0 initialized
+2020-07-17 17:57:01.320211: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 17:57:01.320211: wfastcgi.py 3.0.0 initialized
+2020-07-17 18:02:09.194490: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-17 18:02:09.194490: Running on_exit tasks
+2020-07-17 18:02:09.210107: wfastcgi.py 3.0.0 closed
+2020-07-17 18:02:15.522473: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-17 18:02:15.538077: Running on_exit tasks
+2020-07-17 18:02:15.553703: wfastcgi.py 3.0.0 closed
+2020-07-17 18:10:20.401904: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 18:10:20.417547: wfastcgi.py 3.0.0 initialized
+2020-07-17 18:15:34.566816: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-17 18:15:34.566816: Running on_exit tasks
+2020-07-17 18:15:34.582436: wfastcgi.py 3.0.0 closed
+2020-07-17 21:07:44.169047: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 21:07:44.184644: wfastcgi.py 3.0.0 initialized
+2020-07-17 21:07:49.387838: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 21:07:49.387838: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 21:07:49.403461: wfastcgi.py 3.0.0 initialized
+2020-07-17 21:07:49.403461: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 21:07:49.403461: wfastcgi.py 3.0.0 initialized
+2020-07-17 21:07:49.419086: wfastcgi.py 3.0.0 initialized
+2020-07-17 21:07:49.637837: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 21:07:49.653463: wfastcgi.py 3.0.0 initialized
+2020-07-17 21:07:50.481603: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-17 21:07:50.497226: wfastcgi.py 3.0.0 initialized
+2020-07-17 21:12:56.964699: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-17 21:12:56.964699: Running on_exit tasks
+2020-07-17 21:12:56.980326: wfastcgi.py 3.0.0 closed
+2020-07-17 21:13:03.500641: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-17 21:13:03.500641: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-17 21:13:03.520638: Running on_exit tasks
+2020-07-17 21:13:03.521639: Running on_exit tasks
+2020-07-17 21:13:03.538637: wfastcgi.py 3.0.0 closed
+2020-07-17 21:13:03.539638: wfastcgi.py 3.0.0 closed
+2020-07-17 21:13:03.541638: wfastcgi.py 3.0.0 closed
+2020-07-17 21:13:38.409721: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-17 21:13:38.424235: Running on_exit tasks
+2020-07-17 21:13:38.434823: wfastcgi.py 3.0.0 closed
+2020-07-17 21:15:24.026594: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-17 21:15:24.031096: Running on_exit tasks
+2020-07-17 21:15:24.046767: wfastcgi.py 3.0.0 closed
+2020-07-18 08:38:19.802356: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-18 08:38:19.817987: wfastcgi.py 3.0.0 initialized
+2020-07-18 08:43:32.290529: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-18 08:43:32.290529: Running on_exit tasks
+2020-07-18 08:43:32.306150: wfastcgi.py 3.0.0 closed
+2020-07-18 10:23:33.967696: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-18 10:23:33.983306: wfastcgi.py 3.0.0 initialized
+2020-07-18 10:23:37.246279: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-18 10:23:37.261892: wfastcgi.py 3.0.0 initialized
+2020-07-18 10:23:37.745874: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-18 10:23:37.761486: wfastcgi.py 3.0.0 initialized
+2020-07-18 10:23:37.761486: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-18 10:23:37.761486: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-18 10:23:37.777098: wfastcgi.py 3.0.0 initialized
+2020-07-18 10:23:37.792712: wfastcgi.py 3.0.0 initialized
+2020-07-18 10:23:37.933223: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-18 10:23:38.026897: wfastcgi.py 3.0.0 initialized
+2020-07-18 10:28:48.063881: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-18 10:28:48.063881: Running on_exit tasks
+2020-07-18 10:28:48.079491: wfastcgi.py 3.0.0 closed
+2020-07-18 10:28:51.251296: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-18 10:28:51.251296: Running on_exit tasks
+2020-07-18 10:28:51.266773: wfastcgi.py 3.0.0 closed
+2020-07-18 10:28:51.454216: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-18 10:28:51.454216: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-18 10:28:51.454216: Running on_exit tasks
+2020-07-18 10:28:51.469837: Running on_exit tasks
+2020-07-18 10:28:51.469837: wfastcgi.py 3.0.0 closed
+2020-07-18 10:28:51.485458: wfastcgi.py 3.0.0 closed
+2020-07-18 10:28:51.516712: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-18 10:28:51.516712: Running on_exit tasks
+2020-07-18 10:28:51.532321: wfastcgi.py 3.0.0 closed
+2020-07-18 10:30:01.523253: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-18 10:30:01.523253: Running on_exit tasks
+2020-07-18 10:30:01.538875: wfastcgi.py 3.0.0 closed
+2020-07-18 16:36:39.540430: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-18 16:36:39.540430: wfastcgi.py 3.0.0 initialized
+2020-07-18 16:36:42.587423: wfastcgi.py will restart when files in C:\inetpub\wwwroot\ are changed: .*((\.py)|(\.config))$
+2020-07-18 16:36:42.603034: wfastcgi.py 3.0.0 initialized
+2020-07-18 16:41:53.628393: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-18 16:41:53.628393: Running on_exit tasks
+2020-07-18 16:41:53.644012: wfastcgi.py 3.0.0 closed
+2020-07-18 16:41:56.729248: Unhandled exception in wfastcgi.py: Traceback (most recent call last):
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 774, in main
+    record = read_fastcgi_record(fcgi_stream)
+  File "c:\users\ap_vn05672\python38\lib\site-packages\wfastcgi.py", line 158, in read_fastcgi_record
+    data = stream.read(8)     # read record
+OSError: [Errno 22] Invalid argument
+2020-07-18 16:41:56.729248: Running on_exit tasks
+2020-07-18 16:41:56.744853: wfastcgi.py 3.0.0 closed

@@ -6,22 +6,56 @@
     <table id="rfstable" class="display">
         <thead>
         <tr>
-            <th></th>
             <th>Name</th>
             <th>Description</th>
             <th>File Type</th>
+            <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
             {% for row in ffdata %}
                 <tr>
+
+                    <td>
+                        <span id="name_val"  class="row_val">
+                            <a href="./structure?name={{row.name}}" onclick="event.stopPropagation();">{{row.name}}</a>
+                        </span>
+                         <span id="name_edit" class="row_edit">
+                            <input  onblur="editor_out(this);" onchange="editor(this,'{{row.name}}');" name="name" size="10" value="{{row.name|default_if_none:''}}">
+                        </span>
+                    </td>
+                    <td>
+                        <span id="description_val"  class="row_val">
+                            {{row.description}}
+                        </span>
+                         <span id="description_edit" class="row_edit">
+                            <input  onblur="editor_out(this);" onchange="editor(this, '{{row.name}}');" name="description" size="10" value="{{row.description|default_if_none:''}}">
+                        </span>
+                    </td>
+                    <td>
+                        <span id="file_type_val"  class="row_val">
+                            {{row.file_type}}
+                        </span>
+                         <span id="file_type_edit" class="row_edit">
+                             <select onblur="editor_out(this);" onchange="editor(this, '{{row.name}}');"  name="file_type">
+                                <option value="FIXED" {% if row.file_type == 'FIXED' %} selected {% endif %}>FIXED</option>
+                                <option value="CSV" {% if row.file_type == 'CSV' %} selected {% endif %}>CSV</option>
+                                <option value="TAB" {% if row.file_type == 'TAB' %} selected {% endif %}>TAB</option>
+                                <option value="PIPE" {% if row.file_type == 'PIPE' %} selected {% endif %}>PIPE</option>
+                            </select>
+                        </span>
+                    </td>
                     <td>
                         <a href="./run-test/?definition={{row.name}}">Run Test</a>
                     </td>
-                    <td><a href="./structure?name={{row.name}}">{{row.name}}</a> </td>
-                    <td>{{row.description}}</td>
-                    <td>{{row.file_type}}</td>
-
+                    <td>
+                        <form method="post" action="create-copy/">
+                            {% csrf_token %}
+                            <input type="hidden" name="name" value="{{row.name}}">
+                            <button class="greenbuttons" type="submit">Create Copy</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor   %}
         </tbody>
@@ -32,6 +66,7 @@
 <script>
 
     $(document).ready(function() {
+            $(".row_edit").hide();
             $('#rfstable').DataTable({
                 paging: false,
                 scrollY: 300,
@@ -39,7 +74,63 @@
                 order: [[0, 'asc']]
             });
 
+            $('#rfstable').on( 'click', 'tbody td', function (e) {
+                if(this.children[0].style.display == "none")
+                    return false;
+                console.log(this);
+                $(".row_edit").hide();
+                $(".row_val").show();
+                $(this.children[0]).hide();
+                $(this.children[1]).show();
+                this.children[1].children[0].focus();
+            } );
         } );
+
+    function editor_out(ob){
+        console.log("Out");
+        $(ob.parentElement).hide();
+        $(".row_edit").hide();
+        $(".row_val").show();
+    }
+
+    function editor(ob, key){
+        console.log("Changed");
+        if($(ob).val().trim().length==0){
+            ob.value = ob.parentElement.parentElement.children[0].innerHTML.trim();
+            return false;
+        }
+        $(ob.parentElement).hide();
+        $(".row_edit").hide();
+        $(".row_val").show();
+        $.ajax({
+            url : "post/",
+            type: "POST",
+            ob:ob,
+            data : {
+                'name':key,
+                'field':ob.name,
+                'val':$(ob).val(),
+                'csrfmiddlewaretoken':'{{csrf_token }}'
+                },
+            success: function(data, textStatus, jqXHR)
+            {
+                if(data.success){
+                    if(this.ob.name == 'name')
+                        this.ob.parentElement.parentElement.children[0].innerHTML = '<a href="./structure?name='+this.ob.value+'" onclick="event.stopPropagation();">' + this.ob.value + '</a>';
+                    else
+                        this.ob.parentElement.parentElement.children[0].innerHTML = this.ob.value;
+                }
+                else{
+                    alert("There was error in updating record." + data.message);
+                    this.ob.value = this.ob.parentElement.parentElement.children[0].innerHTML;
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert("There was error in updating record.");
+            }
+        });
+    }
 
 </script>
 

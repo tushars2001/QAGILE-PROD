@@ -87,6 +87,19 @@ def run(request):
     definition = ''
     file_name = ''
     details = '0'
+    response = None
+    lines = []
+    line = []
+    result = ''
+    datatype_errors = 0
+    required_errors = 0
+    email_format_errors = 0
+    pk_errors = []
+    all_null_errors = []
+    date_format_errors = 0
+    rows_passed = 0
+    range_errors = 0
+    skiprows = 0
 
     if "details" in request.GET:
         details = request.GET["details"]
@@ -104,33 +117,49 @@ def run(request):
         file_name = request.GET["file_name"]
 
     if "file_name" in request.POST:
-        file_name = request.POST["file_name"]
+        file_name = request.POST["file_name"].split("/")[-1]
+
+    if not os.path.isfile(os.path.join(settings.MEDIA_ROOT, file_name)):
+        return HttpResponse("<h2>File doesn't exists: " + file_name + " </h2>")
 
     ffdata = models.get_ffdata(definition)
     ffdetails = models.get_ffdetails(definition)
-    response = None
+
+    if ffdata[0]['is_header']:
+        skiprows = 1
+
+    col_array = []
+    col_length_array = []
+
+    for idx in range(len(ffdetails)):
+        col_array.append(ffdetails[idx]['col_name'])
+        col_length_array.append(ffdetails[idx]['max_len'])
+
     if details == '1':
         # Create the HttpResponse object with the appropriate CSV header.
         response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="results.csv"'
+        response['Content-Disposition'] = 'attachment; filename="' + file_name + '_results.csv"'
         writer = csv.writer(response)
 
-    # Using Pandas with a column specification
-    data = pd.read_fwf((os.path.join(settings.MEDIA_ROOT, 'POC2_FIXED_6QF7yLU.TXT')),
-                       widths=[3, 9, 8, 20, 15, 9], header=None, delimiter="\n\t", dtype='object')
+    if ffdata[0]['file_type'] == 'FIXED':
+        # Using Pandas with a column specification
+        data = pd.read_fwf((os.path.join(settings.MEDIA_ROOT, file_name)),
+                           skiprows=skiprows, widths=col_length_array, header=None, delimiter="\n\t", dtype='object')
+
+    if ffdata[0]['file_type'] == 'CSV':
+        data = pd.read_csv(os.path.join(settings.MEDIA_ROOT, file_name),
+                           skiprows=skiprows, header=None, dtype='object',).fillna('')
+
+    if ffdata[0]['file_type'] == 'PIPE':
+        data = pd.read_csv(os.path.join(settings.MEDIA_ROOT, file_name),
+                           skiprows=skiprows, header=None, dtype='object', sep='|').fillna('')
+
+    if ffdata[0]['file_type'] == 'TAB':
+        data = pd.read_csv(os.path.join(settings.MEDIA_ROOT, file_name),
+                           skiprows=skiprows, header=None, dtype='object', sep='\t', lineterminator='\n').fillna('')
+
     rows = data.shape[0]
     cols = data.shape[1]
-    lines = []
-    line = []
-    result = ''
-    datatype_errors = 0
-    required_errors = 0
-    email_format_errors = 0
-    pk_errors = []
-    all_null_errors = []
-    date_format_errors = 0
-    rows_passed = 0
-    range_errors = 0
     # writer.writerow(header)
 
     # duplicate key field test
@@ -221,7 +250,8 @@ def run(request):
             'date_format_errors': date_format_errors,
             'rows_passed': rows_passed,
             'range_errors': range_errors,
-            'all_null_errors': all_null_errors
+            'all_null_errors': all_null_errors,
+            'file_name': file_name
         }
         print("rendering html")
         return render(request, 'run.html', context_data)
@@ -245,6 +275,31 @@ def post_data(request):
 
     if ret['success']:
         updated = models.set_structure_field(request.POST['record_id'], request.POST['field'], request.POST['val'])
+        if not updated['successfully']:
+            ret['success'] = False
+            ret['message'] = ret['message'] + "\n Error Updating record." + updated['message']
+
+    return JsonResponse(ret)
+
+
+def post_ff_data(request):
+    ret = {'success': True, 'message': ''}
+    updated = {'successfully': False, 'message': ''}
+
+    if 'name' not in request.POST:
+        ret['success'] = False
+        ret['message'] = ret['message'] + "\n Key: Name not found. Record not updated."
+
+    if 'field' not in request.POST:
+        ret['success'] = False
+        ret['message'] = ret['message'] + "\n field not found. Record not updated."
+
+    if 'val' not in request.POST:
+        ret['success'] = False
+        ret['message'] = ret['message'] + "\n val not found. Record not updated."
+
+    if ret['success']:
+        updated = models.set_ff_field(request.POST['name'], request.POST['field'], request.POST['val'])
         if not updated['successfully']:
             ret['success'] = False
             ret['message'] = ret['message'] + "\n Error Updating record." + updated['message']
@@ -301,3 +356,41 @@ def create(request):
         return redirect('/tools/fit-and-format/')
     else:
         return redirect('/tools/fit-and-format/create-new-definition/?ret.success=False&ret.message='+ret['message'])
+
+
+def add_row(request):
+    keys = ''
+    name = request.POST['name']
+    col_name = request.POST['col_name']
+
+    if 'keys' in request.POST:
+        keys = request.POST['keys']
+
+    ret = models.add_row(name, col_name, keys)
+    return redirect('/tools/fit-and-format/structure/?name='+name+'&success='+str(ret['successfully'])+'&message='
+                    + ret['message'])
+
+
+def create_copy(request):
+    name = False
+
+    if 'name' in request.POST:
+        name = request.POST['name']
+
+    if not name:
+        return redirect(
+            '/tools/fit-and-format/?success=false&message=Error copying. No SRC provided')
+
+    ret = models.create_copy(name)
+
+    return redirect(
+        '/tools/fit-and-format/?name=' + ret['name'] + '&success=' + str(ret['successfully']) + '&message='
+        + ret['message'])
+
+
+def col_suggestions(request):
+    col_name = request.GET['name']
+
+    html = models.col_suggestions(col_name)
+
+    return HttpResponse(html)
