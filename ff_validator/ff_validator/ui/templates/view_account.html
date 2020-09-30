@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block content %}
+
+<style>
+    .top-buffer { margin-top:20px; }
+
+    ::-webkit-input-placeholder { /* Edge */
+      color: blue; opacity:50%; font-size: small;
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+      color: blue; opacity:50%;font-size: small;
+    }
+
+    ::placeholder {
+      color: blue; opacity:50%;font-size: small;
+    }
+
+    input {
+      outline: 0;
+      border-width: 0 0 1px;
+      border-color: blue
+    }
+    input:focus {
+      border-color: green
+    }
+</style>
+{% load static %}
+<script type="text/javascript" src="{% static 'js/field_validations.js' %}" type="javascript"></script>
+<script>
+    var good = {'name':0, 'password':0, 'confirm':0};
+    function validate(frm){
+        if (!good.name) {
+            $("#name_check").html("Account Name Not Available. Pls choose another name, with min 2 characters.");
+            $("#name_check").fadeIn("slow", function(){
+                $("#name_check").fadeOut(4000, function(){$("#name_check").html("");});
+            });
+
+        }
+        if (!good.password){
+            $("#password_check").html("Min 6 char pls");
+            $("#password_check").fadeIn("slow", function(){
+                $("#password_check").fadeOut(4000, function(){$("#password_check").html("");});
+            });
+        }
+        if (!good.confirm){
+            $("#confirm_check").html("Passwords don't match");
+                $("#confirm_check").fadeIn("slow", function(){
+                    $("#confirm_check").fadeOut(4000, function(){$("#confirm_check").html("");});
+                });
+        }
+
+        if (good.password && good.confirm && good.name)
+            document.getElementById('form_create').submit();
+
+        return false;
+    }
+
+
+
+</script>
+{% if error %}
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col">
+            {{error}}
+        </div>
+        <div class="col">
+        </div>
+    </div>
+{% endif %}
+<div class="row">
+<div class="col">
+</div>
+<div class="col main_content" >
+    <form method="post" action="" id="form_create">
+        {% csrf_token %}
+        <div class="row top-buffer">
+            <div class="col">  First Name </div>
+            <div class="col"> <input name="first_name" type="text" placeholder="Please type your first name" value="{{user.first_name}}"> </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col">  Last Name </div>
+            <div class="col"> <input name="last_name" type="text" placeholder="Please type your last name" value="{{user.last_name}}"> </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col"> Email </div>
+            <div class="col"> <input type="text" name="email" placeholder="Please type your email" value="{{user.email}}"> </div>
+        </div>
+        <!--<div class="row top-buffer">
+            <div class="col"> Account Name </div>
+            <div class="col"> <input type="text" placeholder="Name for your account" disabled value="{{user.username}}">
+            </div>
+        </div>--->
+        <div class="row top-buffer">
+            <div class="col">
+                <button type="submit">Update Account</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="col">
+</div>
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block content %}
+
+<div class="main_content justify-content-center">
+
+        <div class="row justify-content-center">
+                <div style="min-height:100px; margin-top:30px"><h2>Create Definition</h2></div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col"></div>
+            <div class="col-9 table-responsive">
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <table class="rfstables" >
+                        <tr>
+                            <th>Name</th><td><input name="name"  maxlength="20" required>
+                        <div style="display:none" id="message"></div></td></tr>
+                        <tr>
+                            <th>Description</th><td><input name="description" maxlength="45"></td></tr>
+                        <tr>
+                            <th>Is First Record Header?</th><td><input type="checkbox" name="is_header"></td></tr>
+                        <tr>
+                           <th>File Type</th><td>
+                            <select  name="file_type">
+                                <option value="FIXED">FIXED</option>
+                                <option value="CSV">CSV</option>
+                                <option value="TAB" >TAB</option>
+                                <option value="PIPE">PIPE</option>
+                            </select>
+                        </td></tr>
+                        <tr>
+                            <td colspan="2"><button id="sub_form" type="submit">Submit</button></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="col"></div>
+        </div>
+
+
+<script>
+
+</script>
+
+
+</div>
+
+{% endblock %}

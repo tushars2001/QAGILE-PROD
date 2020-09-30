@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block content %}
+<script>
+
+    $(document).ready(function(){
+            $('.expand').click(function(){
+                target_num = $(this).attr('id').split('-')[1];
+                content_id = '#expandable-'.concat(target_num);
+                $(content_id).slideToggle('fast');
+            });
+    });
+
+</script>
+<style>
+
+    .expand {
+        font-weight: bold;
+        font-style: italic;
+        font-size: 12px;
+        cursor: pointer;
+    }
+    .expandable {
+        display:none;
+    }
+
+
+</style>
+<div class="main_content">
+    <div class="row justify-content-center" style="min-height:50px"></div>
+    <div class="row justify-content-center" style="min-height:50px"><h3>My Execution Summary</h3></div>
+     <div class="row justify-content-center" style="min-height:20px"><p style="color:green">
+         We never store your file data, hence only summary of execution is available
+     </p></div>
+    <div class="row justify-content-center">
+        <table border="1" style="width:80%; text-align:center">
+            <tr>
+                <th>Run ID</th>
+                <th>Definition</th>
+                <th>Execution Date</th>
+                <th>Summary</th>
+            </tr>
+            {% for summary in summaries.test_summary_details %}
+             <tr>
+                 <td>{{summary.runid}}</td>
+                <td>{{summary.definition_name}}</td>
+                 <td>{{summary.created}}</td>
+                <tD style="text-align:left">
+                    <div class="collapseable">
+                        <p class="expand" id="expand-{{forloop.counter}}">+/-</p>
+                        <div class="expandable" id="expandable-{{forloop.counter}}">
+                            <table style=" width:100%; border:1px solid black">
+                            {% for key, value in summary.summary.items %}
+                            <tr style="border-bottom:1px solid black">
+                                <td>{{key}}</td><td>{{value}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                        </div>
+                    </div>
+
+                </tD>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+    </div>
+</div>
+
+{% endblock %}

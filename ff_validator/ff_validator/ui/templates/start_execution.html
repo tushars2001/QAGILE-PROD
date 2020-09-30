@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block content %}
+
+<div class="main_content">
+    {% if not structure_details %}
+        <div class="row justify-content-center">
+        <h3>
+            No File Structure Found.
+            Please <a href="/create-structure/?name=">create structure</a>  first to run the test.
+        </h3>
+        </div>
+    {% else %}
+
+        <div class="row justify-content-center">
+            You are about to start executing {{structure_details.0.definition_name}}
+        </div>
+        <div class="row justify-content-center">
+            <table class="rbstable" style="text-align:center">
+                <tr>
+                    <td>Upload File To Be Tested<br>
+                    No Data is Stored on our servers, even temporarly. File is analyzed 'in-memory' and never falls into storage. </td>
+                </tr>
+
+                    <form method="post" enctype="multipart/form-data" action="/read/">
+                        {% csrf_token %}
+                         <tr>
+                            <td>
+                            <input type="file" name="myfile" required style="color: transparent;width:99px;">
+                            <input type="hidden" name="definition" value="{{structure_details.0.definition_name}}">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="submit">Start Execution</button>
+                            </td>
+                        </tr>
+                    </form>
+
+                {% if uploaded_file_url %}
+                    <tr><td colspan="2">
+                        File: {{uploaded_file_url}}<br>
+                        <form name="running-test" method="post" action="./run/">
+                            {% csrf_token %}
+                            <input type="hidden" name="definition" value="{{ffdata.name}}">
+                            <input type="hidden" name="file_name" value="{{uploaded_file_url}}">
+                            <button class="greenbuttons" type="submit">Start Test for <b>{{name}}</b></button>
+                        </form>
+                    </td></tr>
+                {% endif %}
+            </table>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Read File</title>
+</head>
+<body>
+    <form method="post" enctype="multipart/form-data" action="read/"> 
+        {% csrf_token %} 
+        <input type="file" name="myfile" required> 
+        <input type="hidden" name="definition" value="IS001T122"> 
+        <button type="submit">Upload</button> 
+    </form>
+
+</body>
+</html>

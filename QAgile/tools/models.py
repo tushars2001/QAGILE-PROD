@@ -261,6 +261,8 @@ def check_name(name):
 
 
 def add_row(name, col_name, keys):
+
+
     updated = {'successfully': True, 'message': ''}
     fields = {'name': name, 'col_name': col_name, 'keys': keys}
 

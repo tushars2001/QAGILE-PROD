@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block content %}
+
+<style>
+    .top-buffer { margin-top:20px; }
+
+    ::-webkit-input-placeholder { /* Edge */
+      color: blue; opacity:50%; font-size: small;
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+      color: blue; opacity:50%;font-size: small;
+    }
+
+</style>
+{% load static %}
+<script type="text/javascript" src="{% static 'js/field_validations.js' %}" type="javascript"></script>
+<script>
+    var good = {'name':1, 'password':0, 'confirm':0, 'email':0};
+    function validate(frm){
+        $("input[name='email']").blur();
+        $("input[name='password']").blur();
+        $("input[name='password_confirm']").blur();
+
+        if (good.password && good.confirm && good.name && good.email)
+            document.getElementById('form_create').submit();
+
+        return false;
+    }
+
+
+
+</script>
+<div class="row">
+<div class="col">
+</div>
+<div class="col main_content" >
+    <form method="post" action="" id="form_create">
+        {% csrf_token %}
+        <!--<div class="row top-buffer">
+            <div class="col">  Name </div>
+            <div class="col"> <input type="text" placeholder="Please type your name"> </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col"> Email </div>
+            <div class="col"> <input type="text" placeholder="Please type your email"> </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col"> Phone </div>
+            <div class="col"> <input type="text" placeholder="Optionally add your phone"> </div>
+        </div>-->
+        <div class="row top-buffer">
+            <div class="col"> Email </div>
+            <div class="col"> <input type="text" name="email" placeholder="my@email.com" required onblur="check_email(this)">
+                <div id="email_check" style="display:none; color:red; font-size:small"></div>
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col"> Account Password </div>
+            <div class="col"> <input type="password" name="password" placeholder="Password (Min 6 char)" required onblur="check_password(this)">
+                <div id="password_check" style="display:none; color:red; font-size:small"></div>
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col"> Confirm Password </div>
+            <div class="col"> <input type="password" name="password_confirm" placeholder="Confirm your password" required onblur="check_confirm(this)">
+                <div id="confirm_check" style="display:none; color:red; font-size:small"></div>
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col">
+                <button type="button" onclick="validate(this)">Create Account</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="col">
+</div>
+</div>
+
+
+
+
+{% endblock %}

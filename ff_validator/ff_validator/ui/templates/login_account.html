@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block content %}
+
+<style>
+    .top-buffer { margin-top:20px; }
+</style>
+{% load static %}
+<script type="text/javascript" src="{% static 'js/field_validations.js' %}" type="javascript"></script>
+<script>
+    var good = {'name':1, 'password':0, 'email':0};
+    function validate(){
+            $("input[name='email']").blur();
+            $("input[name='password']").blur();
+
+        if (good.password &&  good.email)
+            document.getElementById('form_login').submit();
+    }
+
+</script>
+<div class="row main_content">
+    <div class="col">
+    </div>
+    <div class="col">
+        <form method="post" action="" name="form_login" id="form_login">
+            {% csrf_token %}
+            {% if error %}
+               <div class="row top-buffer">
+                    <div class="col" style="color:red; opacity: 50%; font-size:small">
+                        {% if error == "NO_USER" %}
+                            You don't look familiar. Why not <a href="/create-account/">create an account </a> ?
+                        {% endif %}
+                        {% if error == "INVALID_PASSWORD" %}
+                            Did you forget password? You can do a <a href="/reset-password/?account_name={{user}}">password reset </a>.
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+            <div class="row top-buffer">
+                <div class="col"> Email
+                </div>
+                <div class="col"> <input type="text" onblur="check_email(this)" name="email" {% if error == 'INVALID_PASSWORD' %} value="{{user}}" {% endif %}>
+                    <div id="name_check" style="display:none; color:red; font-size:small"></div>
+                </div>
+            </div>
+            <div class="row top-buffer">
+                <div class="col"> Account Password </div>
+                <div class="col"> <input type="password" name="password" onblur="check_password(this)">
+                <div id="password_check" style="display:none; color:red; font-size:small"></div></div>
+            </div>
+            <div class="row top-buffer">
+                <div class="col">
+                    <button type="button" onclick="validate()">Login</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col">
+    </div>
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,77 @@
+ <div class="nav-side-menu" style="z-index:999" >
+     <div class="brand">
+         <div onclick="window.location.href = '/'" style="cursor:pointer; font-size:x-large">
+             {% load static %}
+             <img id="brand_logo" src="{% static 'images/Qagile.png' %}">
+         </div>
+     </div>
+      <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+
+          <div class="menu-list">
+               <ul id="menu-content" class="menu-content collapse out">
+                {% if user.is_authenticated %}
+                    <!--<li  data-toggle="collapse" data-target="#products" class="collapsed active">
+                        <a href="#"><i class="fa fa-gift fa-lg"></i> Account <span class="arrow"></span></a>
+                    </li>
+
+                   <ul class="sub-menu collapse" id="products">
+                        <li onclick="window.location.href='/view-account'">View Account</li>
+                    </ul>--->
+
+
+                   <li onclick="window.location.href='/view-definition'" >
+                       <a href="#"><i class="fa fa-user fa-lg"></i> Structures </a>
+                    </li>
+
+                    <!--<li data-toggle="collapse" data-target="#service" class="collapsed">
+                        <a href="#"><i class="fa fa-globe fa-lg"></i> Definition <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="service">
+                        <li onclick="window.location.href='/create-definition'">Create Definition</li>
+                        <li onclick="window.location.href='/view-definition'">View Definition</li>
+                    </ul>-->
+
+                    <!---<li data-toggle="collapse" data-target="#new" class="collapsed">
+                        <a href="#"><i class="fa fa-car fa-lg"></i> Structure <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="new">
+                        <li onclick="window.location.href='/create-structure'">Create Structure</li>
+                        <li onclick="window.location.href='/view-structure'">View Structure</li>
+                    </ul>--->
+
+                   <li onclick="window.location.href='/run-test'" >
+                       <a href="#"><i class="fa fa-user fa-lg"></i> Run Test</a>
+                    </li>
+
+                   <li onclick="window.location.href='/view-results'" >
+                       <a href="#"><i class="fa fa-user fa-lg"></i> Results </a>
+                    </li>
+
+                   <li onclick="window.location.href='/view-account'" >
+                       <a href="#"><i class="fa fa-user fa-lg"></i> Account </a>
+                    </li>
+
+                   <li onclick="window.location.href='/logout/'">
+                       <a href="#"><i class="fa fa-users fa-lg"></i> Logout</a>
+                  </li>
+
+                {% else %}
+
+                    <li onclick="window.location.href='/login-account/'">
+                        <a href="#"><i class="fa fa-dashboard fa-lg"></i> Login</a>
+                    </li>
+
+                    <li onclick="window.location.href='/create-account/'">
+                        <a href="#"><i class="fa fa-dashboard fa-lg"></i> Create FREE Account</a>
+                    </li>
+                   <li onclick="window.location.href='/reset-password/'">
+                       <a href="#"><i class="fa fa-dashboard fa-lg"></i> Reset Password</a>
+                    </li>
+                {% endif %}
+                    <li onclick="window.location.href='/help/'">
+                        <a href="#"><i class="fa fa-dashboard fa-lg"></i> Help</a>
+                    </li>
+
+              </ul>
+       </div>
+  </div>

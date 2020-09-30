@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block content %}
+
+<div class="main_content justify-content-center">
+    {% if not definitions %}
+    <div class="row" style="min-height:100px"></div>
+    <div class="row justify-content-center">You do not have any definition/structure created.<br>Here is help on how to start</div>
+    <div class="row" style="min-height:20px"></div>
+    <div class="row justify-content-center">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/l4sloCxhQls" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="row" style="min-height:20px"></div>
+    <div class="row justify-content-center pointer" onclick="window.location.href='/create-definition/'">Start Creating Definitions</div>
+
+    {% else %}
+        <div class="row justify-content-center">
+                <div style="min-height:100px; margin-top:30px"><h2>My Definitions</h2></div>
+        </div>
+        <div class="row justify-content-center pointer" onclick="window.location.href='/create-definition/'" style="color:blue; font-weight:bold">
+            + Create New Definition
+        </div>
+        <div class="row justify-content-center">
+            <div class="col"></div>
+            <div class="col-9 table-responsive">
+            <table id="rfstable" >
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>File Type</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for row in definitions.definition_details %}
+                        <tr>
+
+                            <td>
+                                <span id="name_val"  class="row_val">
+                                    <a href="/create-structure/?name={{row.name}}" onclick="event.stopPropagation();">{{row.name}}</a>
+                                </span>
+                                 <!--<span id="name_edit" class="row_edit">
+                                    <input  onblur="editor_out(this);" onchange="editor(this,'{{row.name}}');" name="name" size="10" value="{{row.name|default_if_none:''}}">
+                                </span>-->
+                            </td>
+                            <td>
+                                <span id="description_val"  class="row_val">
+                                    {{row.description}}
+                                </span>
+                                 <span id="description_edit" class="row_edit">
+                                    <input  onblur="editor_out(this);" onchange="editor(this, '{{row.name}}');" name="description" size="10" value="{{row.description|default_if_none:''}}">
+                                </span>
+                            </td>
+                            <td>
+                                <span id="file_type_val"  class="row_val">
+                                    {{row.file_type}}
+                                </span>
+                                 <span id="file_type_edit" class="row_edit">
+                                     <select onblur="editor_out(this);" onchange="editor(this, '{{row.name}}');"  name="file_type">
+                                        <option value="FIXED" {% if row.file_type == 'FIXED' %} selected {% endif %}>FIXED</option>
+                                        <option value="CSV" {% if row.file_type == 'CSV' %} selected {% endif %}>CSV</option>
+                                        <option value="TAB" {% if row.file_type == 'TAB' %} selected {% endif %}>TAB</option>
+                                        <option value="PIPE" {% if row.file_type == 'PIPE' %} selected {% endif %}>PIPE</option>
+                                    </select>
+                                </span>
+                            </td>
+
+                            <td>
+                                <form method="post" action="create-copy/">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="name" value="{{row.name}}">
+                                    <button class="greenbuttons" type="submit">Create Copy</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor   %}
+                </tbody>
+            </table>
+            </div>
+            <div class="col"></div>
+        </div>
+
+    {% endif %}
+    <script>
+        $(document).ready(function(){
+            $("#definition_table").DataTable();
+        });
+
+        $(document).ready(function() {
+            $(".row_edit").hide();
+            $('#rfstable').DataTable({
+                paging: false,
+                fixedHeader: false,
+                order: [[0, 'asc']]
+            });
+
+            $('#rfstable').on( 'click', 'tbody td', function (e) {
+                if(this.children[0].style.display == "none" || typeof this.children[1] == 'undefined')
+                    return true;
+                console.log(this);
+                $(".row_edit").hide();
+                $(".row_val").show();
+                $(this.children[0]).hide();
+                $(this.children[1]).show();
+                this.children[1].children[0].focus();
+            } );
+            $('#rfstable').DataTable().draw();
+        } );
+
+    function editor_out(ob){
+        console.log("Out");
+        $(ob.parentElement).hide();
+        $(".row_edit").hide();
+        $(".row_val").show();
+    }
+
+    function editor(ob, key){
+        console.log("Changed");
+        if($(ob).val().trim().length==0){
+            ob.value = ob.parentElement.parentElement.children[0].innerHTML.trim();
+            return false;
+        }
+        if (ob.name == 'name')
+            return false;
+
+        $(ob.parentElement).hide();
+        $(".row_edit").hide();
+        $(".row_val").show();
+        $.ajax({
+            url : "/update-definition/",
+            type: "POST",
+            ob:ob,
+            data : {
+                'name':key,
+                'field':ob.name,
+                'val':$(ob).val(),
+                'csrfmiddlewaretoken':'{{csrf_token }}'
+                },
+            success: function(data, textStatus, jqXHR)
+            {
+                if(data.success){
+                    if(this.ob.name == 'name')
+                        this.ob.parentElement.parentElement.children[0].innerHTML = '<a href="./structure?name='+this.ob.value+'" onclick="event.stopPropagation();">' + this.ob.value + '</a>';
+                    else
+                        this.ob.parentElement.parentElement.children[0].innerHTML = this.ob.value;
+                }
+                else{
+                    alert("There was error in updating record." + data.message);
+                    this.ob.value = this.ob.parentElement.parentElement.children[0].innerHTML;
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert("There was error in updating record.");
+            }
+        });
+    }
+    </script>
+
+</div>
+
+{% endblock %}

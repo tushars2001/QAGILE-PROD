@@ -394,3 +394,7 @@ def col_suggestions(request):
     html = models.col_suggestions(col_name)
 
     return HttpResponse(html)
+
+
+def formats(request):
+    return render(request, "formats.html")

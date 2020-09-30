@@ -1,0 +1,25 @@
+               <table class="rbstable" style="width:100%">
+                {% if user.is_authenticated %}
+                <tr>
+                   <td onclick="window.location.href='/tools/fit-and-format-validator/view-definition'" >
+                       <a href="#"><i class="fa fa-user fa-lg"></i> Structures </a>
+                    </td>
+
+                   <td onclick="window.location.href='/tools/fit-and-format-validator/run-test'" >
+                       <a href="#"><i class="fa fa-user fa-lg"></i> Run Test</a>
+                    </td>
+
+                   <td onclick="window.location.href='/tools/fit-and-format-validator/view-results'" >
+                       <a href="#"><i class="fa fa-user fa-lg"></i> Results </a>
+                    </td>
+
+                   <!--<td onclick="window.location.href='/tools/fit-and-format-validator/view-account'" >
+                       <a href="#"><i class="fa fa-user fa-lg"></i> Account </a>
+                    </td>
+
+                   <td onclick="window.location.href='/tools/fit-and-format-validator/logout/'">
+                       <a href="#"><i class="fa fa-users fa-lg"></i> Logout</a>
+                  </td>-->
+                </tr>
+                {% endif %}
+              </table>

@@ -646,3 +646,4 @@ pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org --trus
 pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org django-python3-saml
 pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org pandas
 pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org validate_email
+pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org requests

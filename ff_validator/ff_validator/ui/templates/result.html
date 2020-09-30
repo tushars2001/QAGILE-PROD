@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block content %}
+   <script>
+
+        $(document).ready(function(){
+
+
+            $('#summary_data').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                     'csv',
+                     {
+                        text: 'Passed',
+                        action: function ( e, dt, node, config ) {
+                            dt.columns(1).search('^Passed*', true, false).draw();
+                        }
+                      },
+                     {
+                        text: 'Failed',
+                        action: function ( e, dt, node, config ) {
+                           dt.columns(1).search('^Failed*', true, false).draw();
+                        }
+                      },
+                     {
+                        text: 'All',
+                        action: function ( e, dt, node, config ) {
+                           dt.columns(1).search('', true, false).draw();
+                        }
+                      }
+                ]
+            });
+        });
+
+    </script>
+    <style>
+        .rec_passed {
+            background-color:#abdfab;
+        }
+
+        .rec_failed {
+            background-color:#faa;
+        }
+    </style>
+
+<div class="main_content">
+    <div class="row" style="min-height:30px"></div>
+    {% if not error %}
+    <div class="row justify-content-center">
+            <table id="summary" border="1">
+                <!--<thead></thead>
+                <tbody style="border:1px solid black">-->
+                <tr style="text-align:center">
+                    <th colspan="2">File Format Validation Summary</th>
+                </tr>
+                <tr>
+                    <th>Error Type</th>
+                    <th>Errors Found</th>
+                </tr>
+                <tr class="rec_failed">
+                    <td>Data Type Errors</th>
+                    <td >{{summary.data_type_errors}}</td>
+                </tr>
+                 <tr class="rec_failed">
+                    <td>Missing Data in Required Fields Errors</th>
+                    <td >{{summary.required_errors}}</td>
+                </tr>
+                 <tr class="rec_failed">
+                    <td>Email Format Errors</th>
+                    <td >{{summary.email_format_errors}}</td>
+                </tr>
+                 <tr class="rec_failed">
+                    <td>Primary Key Errors</th>
+                    <td >
+                        {% for err in summary.pk_errors %}
+                            {{err}}<br>
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr class="rec_failed">
+                    <td>All Null Errors</th>
+                    <td >
+                        {% for err in summary.all_null_errors %}
+                            {{err}}<br>
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr class="rec_failed">
+                    <td>Date Format Errors</th>
+                    <td >{{summary.date_format_errors}}</td>
+                </tr>
+                <tr class="rec_failed">
+                    <td>Range Errors</th>
+                    <td >{{summary.range_errors}}</td>
+                </tr>
+                <tr class="rec_passed">
+                    <td>Row Passed</th>
+                    <td >{{summary.rows_passed}}</td>
+                </tr>
+                <!--</tbody>-->
+            </table>
+    </div>
+    <div class="row justify-content-center" style="height:30px">
+    </div>
+    <div class="row justify-content-center" style="height:40px;">
+        <h3>Record Level Details</h3>
+    </div>
+    <div class="row justify-content-center" style="height:30px">
+    </div>
+    <div class=" justify-content-center">
+        <table id="summary_data" style="width:100%">
+        <thead>
+            <tr>
+                <th>Row Num</th>
+                <th>Test Result</th>
+                {% for col in file_structure %}
+                <th>{{col.col_name}}</th>
+                {% endfor %}
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in output.data %}
+                <tr {% if row.0 == 'Passed' %} class="rec_passed" {% else %} class="rec_failed" {% endif %}>
+                <td>{{ forloop.counter }}</td>
+                {% for col in row %}
+                    <td>{{col}}</td>
+                {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% else %}
+        <h2> {{error |safe}} </h2>
+        <div class="row justify-content-center"><a href="/create-structure/?name={{definition}}">Update Structure</a> </div>
+        <div class="row justify-content-center"><a href="/start-execution/?definition={{definition}}"> Rerun Test with correct file</a> </div>
+    {% endif %}
+
+
+</div>
+
+{% endblock %}

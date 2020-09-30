@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block content %}
+
+    <div class="main_content">
+        {% if user.is_authenticated %}
+            <p>Welcome {{user.first_name}}</p>
+        {% else %}
+            {% include 'salse_pitch.html' %}
+        {% endif %}
+    </div>
+
+{% endblock %}
